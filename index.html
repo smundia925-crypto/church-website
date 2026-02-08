@@ -12,12 +12,77 @@ body {
   background: #87CEEB;
   color: #333;
 }
+/* ================= CHURCHLY BACKGROUND ================= */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(
+    180deg,
+    #f9f9f7,
+    #f4f6f3,
+    #ffffff
+  );
+  overflow-x: hidden;
+}
+
+/* Light rays overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    120deg,
+    rgba(255, 223, 150, 0.12),
+    rgba(255, 223, 150, 0.12) 60px,
+    rgba(255, 255, 255, 0.35) 120px
+  );
+  animation: lightMove 40s linear infinite;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Floating soft particles */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 1px, transparent 2px),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.3) 1px, transparent 2px),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.25) 1px, transparent 2px);
+  background-size: 300px 300px;
+  animation: floatDust 60s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes lightMove {
+  from { transform: translateX(-10%); }
+  to { transform: translateX(10%); }
+}
+
+@keyframes floatDust {
+  from { transform: translateY(0); }
+  to { transform: translateY(-200px); }
+}
+section {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(3px);
+}
+.livestream-section {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.95),
+    rgba(255,245,220,0.95)
+  );
+  border: 2px solid rgba(255,215,120,0.4);
+}
 
 /* ================= HEADER ================= */
 header {
   position: relative;
   height: 90vh;
-  background-image: url("image_church.jpg"); center/cover no-repeat;
+  background: url("image/image_church.jpg") center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -351,6 +416,98 @@ h2 {
 
   animation: fadeInUpSoft 1.2s ease-out;
 }
+/* ================= SCROLL REVEAL ANIMATION ================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 1s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slight background motion for sections */
+section {
+  position: relative;
+  overflow: hidden;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(135,206,235,0.12),
+    rgba(255,255,255,0.15)
+  );
+  animation: bgMove 18s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+section > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes bgMove {
+  from {
+    transform: translateX(-5%);
+  }
+  to {
+    transform: translateX(5%);
+  }
+}
+.livestream-container iframe {
+  width: 100%;
+  height: 420px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 768px) {
+  .livestream-container iframe {
+    height: 240px;
+  }
+}
+.live-banner {
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #c62828, #ff5252);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  cursor: pointer;
+  z-index: 9999;
+  transition: top 0.6s ease;
+}
+
+.live-banner.show {
+  top: 15px;
+}
+
+@media (max-width: 768px) {
+  .live-banner {
+    font-size: 13px;
+    padding: 10px 18px;
+  }
+}
+.live-hidden {
+  display: none;
+}
+
+.live-status {
+  font-weight: bold;
+  color: #b30000;
+  margin-bottom: 10px;
+}
 
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -361,7 +518,7 @@ h2 {
 <!-- HEADER -->
 <header>
   <div class="header-content">
-<img src="image_logo.png" alt="Church Logo">
+    <img src="image/image_logo.png" alt="Pefa Church Logo">
     <h1>PEFA Cathedral of Grace</h1>
     <p>Nyeri Town • On Your Way to Mumbi Road</p>
   </div>
@@ -376,7 +533,7 @@ h2 {
 </nav>
 
 <!-- HOME -->
-<section id="home" class="welcome">
+<section id="home" class="welcome reveal">
   <h2>Welcome Home</h2>
 
   <p class="welcome-sub">
@@ -405,7 +562,7 @@ h2 {
 </section>
 
 <!-- ABOUT -->
-<section id="about" class="about-section">
+<section id="about" class="about-section reveal">
   <h2>About Us</h2>
 
   <p class="about-text">
@@ -425,12 +582,12 @@ h2 {
     <div class="leaders">
       <div class="leader-card">
         <h4>Bishop Dr. James Ndirangu</h4>
-        <span>Senior Pastor</span>
+        <span>Presiding Bishop</span>
       </div>
 
       <div class="leader-card">
         <h4>Pastor Daniel Muchemi</h4>
-        <span>Associate Pastor</span>
+        <span>Resident Pastor</span>
       </div>
     </div>
   </div>
@@ -469,7 +626,7 @@ h2 {
 </section>
 
 <!-- LOCATION -->
-<section id="location">
+<section id="location" class="reveal">
   <h2>Our Location</h2>
   <p>Nyeri Town • Along Mumbi Road</p>
 
@@ -480,25 +637,30 @@ h2 {
     </iframe>
   </div>
 </section>
-</section>  <!-- last existing section -->
 
 <!-- LIVESTREAM SECTION -->
-<section class="livestream-section reveal">
-  <h2>Live Service</h2>
+<section id="livestream">
 
-  <div class="livestream-container">
-    <iframe
-      src="https://www.youtube.com/embed/LIVE_VIDEO_ID"
-      title="PEFA Nyeri Cathedral of Grace Live"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <p class="live-note">
-    🔴 Join us live every Sunday for worship and the Word
+<div id="liveWrapper" class="live-hidden">
+  <p class="live-status">
+    🔴 WE ARE LIVE — Tap to Watch
   </p>
+
+  <iframe
+    id="liveFrame"
+    width="100%"
+    height="315"
+    src="https://www.youtube.com/embed/live_stream?channel=UCSIng4RMDebf-7OQKl_6GQA"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<p id="offlineText">
+  🔴 When we go live on YouTube, the service will appear here automatically
+</p>
+
 </section>
 
 <!-- FOOTER -->
@@ -553,6 +715,51 @@ h2 {
 
   window.addEventListener("scroll", revealOnScroll);
   revealOnScroll(); // run once on load
+</script>
+<script>
+const channelId = "UCSIng4RMDebf-7OQKl_6GQA";
+const liveIframe = document.querySelector(".livestream-container iframe");
+const banner = document.getElementById("liveBanner");
+
+function checkIfLive() {
+  const liveUrl = `https://www.youtube.com/embed/live_stream?channel=${channelId}&autoplay=1&mute=1`;
+
+  fetch(liveUrl, { method: "HEAD", mode: "no-cors" })
+    .then(() => {
+      banner.classList.add("show");
+    })
+    .catch(() => {
+      banner.classList.remove("show");
+    });
+}
+
+function scrollToLive() {
+  document.querySelector(".livestream-section").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+// check every 30 seconds
+setInterval(checkIfLive, 30000);
+checkIfLive();
+</script>
+<script>
+const iframe = document.getElementById("liveFrame");
+const wrapper = document.getElementById("liveWrapper");
+const offlineText = document.getElementById("offlineText");
+
+iframe.onload = () => {
+  try {
+    const src = iframe.src;
+    if (src.includes("live_stream")) {
+      wrapper.classList.remove("live-hidden");
+      offlineText.style.display = "none";
+    }
+  } catch (e) {
+    wrapper.classList.add("live-hidden");
+    offlineText.style.display = "block";
+  }
+};
 </script>
 </body>
 </html>
